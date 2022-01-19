@@ -31,7 +31,7 @@ public class ProductsService {
             spec = spec.and(ProductsSpecifications.titleLike(partTitle));
         }
 
-        return productsRepository.findAll(spec, PageRequest.of(page - 1, 50));
+        return productsRepository.findAll(spec, PageRequest.of(page - 1, 8));
     }
 
     public Optional<Product> findById(Long id) {

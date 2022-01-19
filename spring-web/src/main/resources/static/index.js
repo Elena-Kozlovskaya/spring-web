@@ -29,7 +29,30 @@
 
     function run($rootScope, $http, $localStorage) {
         if ($localStorage.springWebUser) {
-            $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
+            try {
+                // удаление просроченного токена
+                let jwt = $localStorage.springWebUser.token;
+                let payload = JSON.parse(atob(jwt.split('.')[1]));
+                let currentTime = parseInt(new Date().getTime() / 1000);
+                if (currentTime > payload.exp) {
+                    console.log("Token is expired!!!");
+                    delete $localStorage.springWebUser;
+                    $http.defaults.headers.common.Authorization = '';
+                }
+            } catch (e) {
+            }
+
+            if ($localStorage.springWebUser) {
+                $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
+            }
+        }
+        // Если в локальном хранилище нет ID корзины, то запрашиваем его(генерим)
+        if (!$localStorage.springWebGuestCartId) {
+            $http.get('http://localhost:8189/app/api/v1/cart/generate')
+                .then(function successCallback(response) {
+                    // записываем id в локалсторедж
+                    $localStorage.springWebGuestCartId = response.data.value;
+                });
         }
     }
 })();
@@ -44,6 +67,11 @@ angular.module('market-front').controller('indexController', function ($rootScop
 
                     $scope.user.username = null;
                     $scope.user.password = null;
+
+                    // соединение корзин до авторизации и после
+                    $http.get('http://localhost:8189/app/api/v1/cart/' + $localStorage.springWebGuestCartId + '/merge')
+                        .then(function successCallback(response) {
+                        });
 
                     $location.path('/');
                 }
