@@ -6,6 +6,7 @@ import com.geekbrains.spring.web.entities.Product;
 import com.geekbrains.spring.web.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.repositories.ProductsRepository;
 import com.geekbrains.spring.web.repositories.specifications.ProductsSpecifications;
+import com.geekbrains.spring.web.soap.products.ProductSoap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,12 +14,24 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductsService {
     private final ProductsRepository productsRepository;
+
+    public static final Function<Product, ProductSoap> functionEntityToSoap = product -> {
+        ProductSoap productSoap = new ProductSoap();
+        productSoap.setId(product.getId());
+        productSoap.setTitle(product.getTitle());
+        productSoap.setPrice(product.getPrice());
+        productSoap.setCategoryTitle(product.getCategory().getTitle());
+        return productSoap;
+    };
 
     public Page<Product> findAll(Integer minPrice, Integer maxPrice, String partTitle, String categoryPartTitle, Integer page) {
         Specification<Product> spec = Specification.where(null);
@@ -56,5 +69,12 @@ public class ProductsService {
         product.setPrice(productDto.getPrice());
         product.setTitle(productDto.getTitle());
         return product;
+    }
+    public ProductSoap findProductById(Long id) {
+        return productsRepository.findById(id).map(functionEntityToSoap).get();
+    }
+
+    public List<ProductSoap> findAllProducts() {
+        return productsRepository.findAll().stream().map(functionEntityToSoap).collect(Collectors.toList());
     }
 }
