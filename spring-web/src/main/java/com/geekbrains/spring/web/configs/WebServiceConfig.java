@@ -23,30 +23,35 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return new ServletRegistrationBean(servlet, "/ws/*");
     }
 
-    /*// http://localhost:8080/ws/groups.wsdl
-    @Bean(name = "groups")
-    public DefaultWsdl11Definition groupsWsdl11Definition(XsdSchema groupsSchema) {
+    // http://localhost:8189/app/web/categories.wsdl
+    @Bean(name = "categories")
+    public DefaultWsdl11Definition categoriesWsdl11Definition(XsdSchema categoriesSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-        wsdl11Definition.setPortTypeName("GroupsPort");
+        wsdl11Definition.setPortTypeName("CategoriesPort");
         wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://www.flamexander.com/spring/ws/groups");
-        wsdl11Definition.setSchema(groupsSchema);
+        wsdl11Definition.setTargetNamespace("http://www.geekbrains.com/spring/web/soap/categories");
+        wsdl11Definition.setSchema(categoriesSchema);
         return wsdl11Definition;
-    }*/
+    }
 
-    // http://localhost:8080/ws/products.wsdl
+    // http://localhost:8189/app/web/products.wsdl
     @Bean(name = "products")
-    public DefaultWsdl11Definition studentsWsdl11Definition(XsdSchema productsSchema) {
+    public DefaultWsdl11Definition productsWsdl11Definition(XsdSchema productsSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("ProductsPort");
         wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://www.geekbrains.com/spring/ws/products");
+        wsdl11Definition.setTargetNamespace("http://www.geekbrains.com/spring/web/products");
         wsdl11Definition.setSchema(productsSchema);
         return wsdl11Definition;
     }
 
     @Bean
-    public XsdSchema studentsSchema() {
+    public XsdSchema productsSchema() {
         return new SimpleXsdSchema(new ClassPathResource("products.xsd"));
+    }
+
+    @Bean
+    public XsdSchema categoriesSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("categories.xsd"));
     }
 }

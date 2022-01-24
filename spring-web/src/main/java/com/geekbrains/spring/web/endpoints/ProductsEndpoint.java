@@ -14,22 +14,22 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 @Endpoint
 @RequiredArgsConstructor
 public class ProductsEndpoint {
-    private static final String NAMESPACE_URI = "http://www.geekbrains.com/spring/ws/products";
+    private static final String NAMESPACE_URI = "http://www.geekbrains.com/spring/web/products";
     private final ProductsService productsService;
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getProductByIdRequest")
     @ResponsePayload
     public GetProductByIdResponse getProductById(@RequestPayload GetProductByIdRequest request) {
         GetProductByIdResponse response = new GetProductByIdResponse();
-        response.setProductSoap(productsService.findProductById(request.getId()));
+        response.setProduct(productsService.findProductById(request.getId()));
         return response;
     }
 
     /*
-        Пример запроса: POST http://localhost:8189/ws
+        Пример запроса: POST http://localhost:8189/app/ws
         Header -> Content-Type: text/xml
 
-        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:f="http://www.geekbrains.com/spring/ws/products">
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:f="http://www.geekbrains.com/spring/web/products">
             <soapenv:Header/>
             <soapenv:Body>
                 <f:getAllProductsRequest/>
@@ -41,7 +41,7 @@ public class ProductsEndpoint {
     @ResponsePayload
     public GetAllProductsResponse getAllProducts(@RequestPayload GetAllProductsRequest request) {
         GetAllProductsResponse response = new GetAllProductsResponse();
-        productsService.findAllProducts().forEach(response.getProductSoaps()::add);
+        productsService.findAllProducts().forEach(response.getProducts()::add);
         return response;
     }
 }

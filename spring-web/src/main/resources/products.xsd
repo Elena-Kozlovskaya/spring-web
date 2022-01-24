@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xs:schema
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:tns="http://www.geekbrains.com/spring/ws/products"
-        targetNamespace="http://www.geekbrains.com/spring/ws/products" elementFormDefault="qualified">
+        xmlns:tns="http://www.geekbrains.com/spring/web/products"
+        targetNamespace="http://www.geekbrains.com/spring/web/products" elementFormDefault="qualified">
 
     <xs:element name="getProductByIdRequest">
         <xs:complexType>
@@ -19,7 +19,7 @@
     <xs:element name="getProductByIdResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="ProductSoap" type="tns:ProductSoap"/>
+                <xs:element name="product" type="tns:ProductSoap"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -27,7 +27,7 @@
     <xs:element name="getAllProductsResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="ProductSoaps" maxOccurs="unbounded" type="tns:ProductSoap"/>
+                <xs:element name="products" maxOccurs="unbounded" type="tns:ProductSoap"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

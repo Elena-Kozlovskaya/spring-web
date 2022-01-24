@@ -6,12 +6,9 @@
 //
 
 
-package com.geekbrains.spring.web.soap.products;
+package com.geekbrains.spring.web.soap.categories;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -24,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="category" type="{http://www.geekbrains.com/spring/web/categories}CategorySoap"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -35,27 +32,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "id"
+    "category"
 })
-@XmlRootElement(name = "getProductByIdRequest")
-public class GetProductByIdRequest {
+@XmlRootElement(name = "getCategoryByTitleResponse")
+public class GetCategoryByTitleResponse {
 
-    protected long id;
+    @XmlElement(required = true)
+    protected CategorySoap category;
 
     /**
-     * Gets the value of the id property.
+     * Gets the value of the category property.
      * 
+     * @return
+     *     possible object is
+     *     {@link CategorySoap }
+     *     
      */
-    public long getId() {
-        return id;
+    public CategorySoap getCategory() {
+        return category;
     }
 
     /**
-     * Sets the value of the id property.
+     * Sets the value of the category property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link CategorySoap }
+     *     
      */
-    public void setId(long value) {
-        this.id = value;
+    public void setCategory(CategorySoap value) {
+        this.category = value;
     }
 
 }

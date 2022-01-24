@@ -6,23 +6,29 @@
 //
 
 
-package com.geekbrains.spring.web.soap.products;
+package com.geekbrains.spring.web.soap.categories;
 
-import javax.xml.bind.annotation.*;
+import com.geekbrains.spring.web.soap.products.ProductSoap;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for CategorySoap complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType&gt;
+ * &lt;complexType name="CategorySoap"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
+ *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="products" type="{http://www.geekbrains.com/spring/web/products}ProductSoap" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
@@ -33,14 +39,40 @@ import java.util.List;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+@XmlType(name = "CategorySoap", propOrder = {
+    "title",
     "products"
 })
-@XmlRootElement(name = "getAllProductsResponse")
-public class GetAllProductsResponse {
+public class CategorySoap {
 
     @XmlElement(required = true)
+    protected String title;
+    @XmlElement(required = true)
     protected List<ProductSoap> products;
+
+    /**
+     * Gets the value of the title property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Sets the value of the title property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTitle(String value) {
+        this.title = value;
+    }
 
     /**
      * Gets the value of the products property.
