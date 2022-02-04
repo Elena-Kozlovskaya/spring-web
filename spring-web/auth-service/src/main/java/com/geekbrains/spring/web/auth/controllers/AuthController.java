@@ -1,10 +1,11 @@
-package com.geekbrains.spring.web.core.controllers;
+package com.geekbrains.spring.web.auth.controllers;
 
-import com.geekbrains.spring.web.core.dto.JwtRequest;
-import com.geekbrains.spring.web.core.dto.JwtResponse;
-import com.geekbrains.spring.web.core.exceptions.AppError;
-import com.geekbrains.spring.web.core.services.UserService;
-import com.geekbrains.spring.web.core.utils.JwtTokenUtil;
+
+import com.geekbrains.spring.web.api.exceptions.AppError;
+import com.geekbrains.spring.web.auth.dto.JwtRequest;
+import com.geekbrains.spring.web.auth.dto.JwtResponse;
+import com.geekbrains.spring.web.auth.services.UserService;
+import com.geekbrains.spring.web.auth.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.geekbrains.spring.web.core.utils;
+package com.geekbrains.spring.web.auth.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -41,7 +41,7 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    public String getUsernameFromToken(String token) {
+    /*public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -59,5 +59,5 @@ public class JwtTokenUtil {
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
-    }
+    }*/
 }

@@ -1,9 +1,10 @@
 package com.geekbrains.spring.web.core.validators;
 
-import com.geekbrains.spring.web.core.exceptions.ValidationException;
+
 import com.geekbrains.spring.web.core.dto.ProductDto;
 import org.springframework.stereotype.Component;
 
+import com.geekbrains.spring.web.core.exceptions.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.geekbrains.spring.web.core.controllers;
 
 import com.geekbrains.spring.web.core.dto.Cart;
-import com.geekbrains.spring.web.core.dto.StringResponse;
+import com.geekbrains.spring.web.api.dto.StringResponse;
 import com.geekbrains.spring.web.core.services.CartService;
 import com.geekbrains.spring.web.core.services.ProductsService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
-@CrossOrigin("*") // прописываем разрешенный порт
 public class CartsController {
     private final CartService cartService;
     private final ProductsService productsService;
@@ -32,48 +31,27 @@ public class CartsController {
     }
 
     @GetMapping("/{uuid}/add/{productId}")
-    public void add(Principal principal, @PathVariable String uuid, @PathVariable Long productId) {
-        // если есть вошедший пользователь, то мы его имя получим. Если пользователь не вошел, то имени нет.
-        String username = null;
-        if (principal != null) {
-            username = principal.getName();
-        }
+    public void add(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long productId) {
         cartService.addToCart(getCurrentCartUuid(username, uuid), productId);
     }
 
     @GetMapping("/{uuid}/decrement/{productId}")
-    public void decrement(Principal principal, @PathVariable String uuid, @PathVariable Long productId) {
-        String username = null;
-        if (principal != null) {
-            username = principal.getName();
-        }
+    public void decrement(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long productId) {
         cartService.decrementItem(getCurrentCartUuid(username, uuid), productId);
     }
 
     @GetMapping("/{uuid}/remove/{productId}")
-    public void remove(Principal principal, @PathVariable String uuid, @PathVariable Long productId) {
-        String username = null;
-        if (principal != null) {
-            username = principal.getName();
-        }
+    public void remove(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long productId) {
         cartService.removeItemFromCart(getCurrentCartUuid(username, uuid), productId);
     }
 
     @GetMapping("/{uuid}/clear")
-    public void clear(Principal principal, @PathVariable String uuid) {
-        String username = null;
-        if (principal != null) {
-            username = principal.getName();
-        }
+    public void clear(@RequestHeader(required = false) String username, @PathVariable String uuid) {
         cartService.clearCart(getCurrentCartUuid(username, uuid));
     }
 
     @GetMapping("/{uuid}/merge")
-    public void merge(Principal principal, @PathVariable String uuid) {
-        String username = null;
-        if (principal != null) {
-            username = principal.getName();
-        }
+    public void merge(@RequestHeader(required = false) String username, @PathVariable String uuid) {
         cartService.merge(
                 getCurrentCartUuid(username, null),
                 getCurrentCartUuid(null, uuid)

@@ -1,4 +1,4 @@
-package com.geekbrains.spring.web.core.exceptions;
+package com.geekbrains.spring.web.api.exceptions;
 
 public class AppError {
     private int statusCode;

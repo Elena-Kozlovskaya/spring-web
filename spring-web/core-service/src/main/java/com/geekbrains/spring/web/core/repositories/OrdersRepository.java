@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Order, Long> {
-    @Query("select o from Order o where o.user.username = ?1")
+    @Query("select o from Order o where o.username = ?1")
     List<Order> findAllByUsername(String username);
 }

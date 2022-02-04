@@ -1,6 +1,7 @@
-package com.geekbrains.spring.web.core.repositories;
+package com.geekbrains.spring.web.auth.repositories;
 
-import com.geekbrains.spring.web.core.entities.User;
+
+import com.geekbrains.spring.web.auth.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

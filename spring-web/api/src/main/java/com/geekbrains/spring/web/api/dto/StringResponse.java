@@ -1,4 +1,4 @@
-package com.geekbrains.spring.web.core.dto;
+package com.geekbrains.spring.web.api.dto;
 
 public class StringResponse {
     private String value;

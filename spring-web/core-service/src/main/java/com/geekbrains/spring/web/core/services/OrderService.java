@@ -1,11 +1,10 @@
 package com.geekbrains.spring.web.core.services;
 
-import com.geekbrains.spring.web.core.entities.Order;
-import com.geekbrains.spring.web.core.entities.OrderItem;
-import com.geekbrains.spring.web.core.entities.User;
+import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.core.dto.Cart;
 import com.geekbrains.spring.web.core.dto.OrderDetailsDto;
-import com.geekbrains.spring.web.core.exceptions.ResourceNotFoundException;
+import com.geekbrains.spring.web.core.entities.Order;
+import com.geekbrains.spring.web.core.entities.OrderItem;
 import com.geekbrains.spring.web.core.repositories.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,13 +21,13 @@ public class OrderService {
     private final ProductsService productsService;
 
     @Transactional
-    public void createOrder(User user, OrderDetailsDto orderDetailsDto) {
-        String cartKey = cartService.getCartUuidFromSuffix(user.getUsername());
+    public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
+        String cartKey = cartService.getCartUuidFromSuffix(username);
         Cart currentCart = cartService.getCurrentCart(cartKey);
         Order order = new Order();
         order.setAddress(orderDetailsDto.getAddress());
         order.setPhone(orderDetailsDto.getPhone());
-        order.setUser(user);
+        order.setUsername(username);
         order.setTotalPrice(currentCart.getTotalPrice());
         List<OrderItem> items = currentCart.getItems().stream()
                 .map(o -> {

@@ -22,7 +22,7 @@ public class OrderConverter {
         out.setAddress(order.getAddress());
         out.setPhone(order.getPhone());
         out.setTotalPrice(order.getTotalPrice());
-        out.setUsername(order.getUser().getUsername());
+        out.setUsername(order.getUsername());
         out.setItems(order.getItems().stream().map(orderItemConverter::entityToDto).collect(Collectors.toList()));
         return out;
     }

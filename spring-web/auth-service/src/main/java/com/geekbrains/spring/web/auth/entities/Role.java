@@ -1,4 +1,4 @@
-package com.geekbrains.spring.web.core.entities;
+package com.geekbrains.spring.web.auth.entities;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
