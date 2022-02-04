@@ -1,28 +1,25 @@
-package com.geekbrains.spring.web.core.controllers;
+package com.geekbrains.spring.web.cart.controllers;
 
-import com.geekbrains.spring.web.core.dto.Cart;
+import com.geekbrains.spring.web.api.dto.CartDto;
 import com.geekbrains.spring.web.api.dto.StringResponse;
-import com.geekbrains.spring.web.core.services.CartService;
-import com.geekbrains.spring.web.core.services.ProductsService;
+import com.geekbrains.spring.web.cart.converters.CartConverter;
+import com.geekbrains.spring.web.cart.dto.Cart;
+import com.geekbrains.spring.web.cart.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartsController {
     private final CartService cartService;
-    private final ProductsService productsService;
+    private final CartConverter cartConverter;
 
     @GetMapping("/{uuid}")
-    public Cart getCart(Principal principal, @PathVariable String uuid) {
-        String username = null;
-        if (principal != null) {
-            username = principal.getName();
-        }
-        return cartService.getCurrentCart(getCurrentCartUuid(username, uuid));
+    public CartDto getCart(@RequestHeader(required = false) String username, @PathVariable String uuid) {
+        System.out.println("username = " + username + " uuid = " + uuid);
+        Cart cart = cartService.getCurrentCart(getCurrentCartUuid(username, uuid));
+        return cartConverter.entityToDto(cart);
     }
 
     @GetMapping("/generate")
@@ -52,6 +49,7 @@ public class CartsController {
 
     @GetMapping("/{uuid}/merge")
     public void merge(@RequestHeader(required = false) String username, @PathVariable String uuid) {
+        System.out.println("username = " + username + " uuid = " + uuid);
         cartService.merge(
                 getCurrentCartUuid(username, null),
                 getCurrentCartUuid(null, uuid)

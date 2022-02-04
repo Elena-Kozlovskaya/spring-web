@@ -69,7 +69,7 @@ angular.module('market-front').controller('indexController', function ($rootScop
                     $scope.user.password = null;
 
                     // соединение корзин до авторизации и после
-                    $http.get('http://localhost:5555/core/api/v1/cart/' + $localStorage.springWebGuestCartId + '/merge')
+                    $http.get('http://localhost:5555/cart/api/v1/cart/' + $localStorage.springWebGuestCartId + '/merge')
                         .then(function successCallback(response) {
                         });
 
