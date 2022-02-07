@@ -14,7 +14,10 @@ public class RedisConfig {
     @Bean
     // фабрика поясняющая, как подключаться к рэдису(если изменить дефолтные порты, приписывать все сюда)
     public JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory();
+        JedisConnectionFactory factory = new JedisConnectionFactory();
+        /*factory.getPoolConfig().setMaxIdle(20);
+        factory.getPoolConfig().setMinIdle(10);*/
+        return factory;
     }
 
     @Bean

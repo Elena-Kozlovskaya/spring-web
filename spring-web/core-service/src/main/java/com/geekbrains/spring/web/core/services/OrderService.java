@@ -1,8 +1,8 @@
 package com.geekbrains.spring.web.core.services;
 
 import com.geekbrains.spring.web.api.dto.CartDto;
+import com.geekbrains.spring.web.api.dto.OrderDetailsDto;
 import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
-import com.geekbrains.spring.web.core.dto.OrderDetailsDto;
 import com.geekbrains.spring.web.core.entities.Order;
 import com.geekbrains.spring.web.core.entities.OrderItem;
 import com.geekbrains.spring.web.core.repositories.OrdersRepository;
@@ -25,7 +25,9 @@ public class OrderService {
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
        // String cartKey = cartService.getCartUuidFromSuffix(username);
         CartDto currentCart = restTemplate.getForObject("http://localhost:5555/cart/api/v1/cart/" + username, CartDto.class);
+        System.out.println("currentCart.getTotalPrice = " + currentCart.getTotalPrice());
         Order order = new Order();
+        System.out.println("Id order = " + order.getId());
         order.setAddress(orderDetailsDto.getAddress());
         order.setPhone(orderDetailsDto.getPhone());
         order.setUsername(username);

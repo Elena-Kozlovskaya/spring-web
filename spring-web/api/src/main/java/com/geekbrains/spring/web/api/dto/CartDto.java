@@ -1,15 +1,33 @@
 package com.geekbrains.spring.web.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class CartDto {
     private List<OrderItemDto> items;
     private int totalPrice;
+
+    public CartDto() {
+    }
+
+    public CartDto(List<OrderItemDto> items, int totalPrice) {
+        this.items = items;
+        this.totalPrice = totalPrice;
+    }
+
+    public List<OrderItemDto> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItemDto> items) {
+        this.items = items;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

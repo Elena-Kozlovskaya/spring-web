@@ -17,7 +17,6 @@ public class CartsController {
 
     @GetMapping("/{uuid}")
     public CartDto getCart(@RequestHeader(required = false) String username, @PathVariable String uuid) {
-        System.out.println("username = " + username + " uuid = " + uuid);
         Cart cart = cartService.getCurrentCart(getCurrentCartUuid(username, uuid));
         return cartConverter.entityToDto(cart);
     }
@@ -48,8 +47,7 @@ public class CartsController {
     }
 
     @GetMapping("/{uuid}/merge")
-    public void merge(@RequestHeader(required = false) String username, @PathVariable String uuid) {
-        System.out.println("username = " + username + " uuid = " + uuid);
+    public void merge(@RequestHeader String username, @PathVariable String uuid) {
         cartService.merge(
                 getCurrentCartUuid(username, null),
                 getCurrentCartUuid(null, uuid)
