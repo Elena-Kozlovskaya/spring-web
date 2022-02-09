@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "orders")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {

@@ -1,8 +1,8 @@
 package com.geekbrains.spring.web.core.controllers;
 
-import com.geekbrains.spring.web.core.converters.OrderConverter;
 import com.geekbrains.spring.web.api.dto.OrderDetailsDto;
 import com.geekbrains.spring.web.api.dto.OrderDto;
+import com.geekbrains.spring.web.core.converters.OrderConverter;
 import com.geekbrains.spring.web.core.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,6 @@ public class OrdersController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrder(@RequestHeader String username, @RequestBody OrderDetailsDto orderDetailsDto) {
-        System.out.println(orderDetailsDto.getPhone());
         orderService.createOrder(username, orderDetailsDto);
     }
 

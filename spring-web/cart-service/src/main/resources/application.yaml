@@ -4,4 +4,4 @@ server:
     context-path: /web-market-cart
 utils:
   cart:
-    prefix: SPRING_APP_
+    prefix: SPRING_WEB_

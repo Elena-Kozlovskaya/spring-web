@@ -1,4 +1,4 @@
-package com.geekbranis.spring.web.gateway;
+package com.geekbrains.spring.web.gateway;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
