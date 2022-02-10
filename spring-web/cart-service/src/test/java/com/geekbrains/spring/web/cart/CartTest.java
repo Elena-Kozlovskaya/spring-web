@@ -1,6 +1,6 @@
 package com.geekbrains.spring.web.cart;
 
-import com.geekbrains.spring.web.api.dto.ProductDto;
+import com.geekbrains.spring.web.api.core.ProductDto;
 import com.geekbrains.spring.web.cart.services.CartService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

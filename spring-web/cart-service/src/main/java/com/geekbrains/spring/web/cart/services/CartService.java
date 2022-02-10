@@ -1,12 +1,13 @@
 package com.geekbrains.spring.web.cart.services;
 
-import com.geekbrains.spring.web.api.dto.ProductDto;
-import com.geekbrains.spring.web.cart.dto.Cart;
+import com.geekbrains.spring.web.api.core.ProductDto;
+import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
+import com.geekbrains.spring.web.cart.integrations.ProductsServiceIntegration;
+import com.geekbrains.spring.web.cart.models.Cart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -17,8 +18,7 @@ import java.util.function.Consumer;
 public class CartService {
 
     private final RedisTemplate<String, Object> redisTemplate;
-
-    private final RestTemplate restTemplate;
+    private final ProductsServiceIntegration productsServiceIntegration;
 
     @Value("${utils.cart.prefix}")
     private String cartPrefix;
@@ -43,7 +43,7 @@ public class CartService {
         // GET from Redis
         // UPDATE OBJECT
         // SET to Redis
-        ProductDto productDto = restTemplate.getForObject("http://localhost:5555/core/api/v1/products/" + productId, ProductDto.class);
+        ProductDto productDto = productsServiceIntegration.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Продукт, не надйен в core-service, id: " + productId));
         execute(cartKey, c -> {
             c.add(productDto);
         });
