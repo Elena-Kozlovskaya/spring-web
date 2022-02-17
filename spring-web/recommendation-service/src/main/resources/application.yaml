@@ -1,11 +1,11 @@
 server:
-  port: 8189
+  port: 8183
   servlet:
-    context-path: /web-market-core
+    context-path: /web-market-rec
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL
+    url: jdbc:h2:file:./recommendations;MODE=PostgreSQL
     username: sa
     password:
   jpa:
@@ -19,7 +19,7 @@ spring:
       settings:
         web-allow-others: false
 integrations:
+  core-service:
+    url: http://localhost:5555/core
   cart-service:
     url: http://localhost:5555/cart
-  recommendation-service:
-    url: http://localhost:5555/rec

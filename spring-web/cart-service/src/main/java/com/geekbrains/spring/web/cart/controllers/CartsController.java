@@ -1,7 +1,9 @@
 package com.geekbrains.spring.web.cart.controllers;
 
+import com.geekbrains.spring.web.api.carts.AnalyticCartDto;
 import com.geekbrains.spring.web.api.carts.CartDto;
 import com.geekbrains.spring.web.api.dto.StringResponse;
+import com.geekbrains.spring.web.cart.converters.AnalyticCartConverter;
 import com.geekbrains.spring.web.cart.converters.CartConverter;
 import com.geekbrains.spring.web.cart.services.CartService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class CartsController {
     private final CartService cartService;
     private final CartConverter cartConverter;
+    private final AnalyticCartConverter analyticCartConverter;
 
     @GetMapping("/{uuid}")
     public CartDto getCart(@RequestHeader(required = false) String username, @PathVariable String uuid) {
@@ -57,5 +60,14 @@ public class CartsController {
             return cartService.getCartUuidFromSuffix(username);
         }
         return cartService.getCartUuidFromSuffix(uuid);
+    }
+
+    @GetMapping("/analytics/{date}")
+    public AnalyticCartDto getAnalytics(@PathVariable String date) {
+        return analyticCartConverter.modelToDto(cartService.getAnalyticsByDate(getAnalyticsByDate(date)));
+    }
+
+    private String getAnalyticsByDate(String date) {
+        return cartService.getAnalyticsUuidFromSuffix(date);
     }
 }

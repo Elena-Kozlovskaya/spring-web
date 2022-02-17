@@ -6,11 +6,13 @@ import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.core.entities.Order;
 import com.geekbrains.spring.web.core.entities.OrderItem;
 import com.geekbrains.spring.web.core.integrations.CartServiceIntegration;
+import com.geekbrains.spring.web.core.repositories.OrderItemRepository;
 import com.geekbrains.spring.web.core.repositories.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrdersRepository ordersRepository;
+    private final OrderItemRepository orderItemRepository;
     private final CartServiceIntegration cartServiceIntegration;
     private final ProductsService productsService;
 
@@ -46,5 +49,9 @@ public class OrderService {
 
     public List<Order> findOrdersByUsername(String username) {
         return ordersRepository.findAllByUsername(username);
+    }
+
+    public List<OrderItem> findAllOrdersByDate(LocalDateTime createdAt, LocalDateTime finishedAt) {
+        return orderItemRepository.findAllByDate(createdAt, finishedAt);
     }
 }
