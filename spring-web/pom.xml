@@ -11,6 +11,7 @@
 		<module>api</module>
 		<module>cart-service</module>
         <module>recommendation-service</module>
+
     </modules>
 
 	<parent>
