@@ -1,9 +1,12 @@
 package com.geekbrains.spring.web.core.configs;
 
+import com.geekbrains.spring.web.core.properties.CartServiceIntegrationProperties;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -14,7 +17,12 @@ import reactor.netty.tcp.TcpClient;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
+@EnableConfigurationProperties(
+        CartServiceIntegrationProperties.class
+)
+@RequiredArgsConstructor
 public class CoreConfig {
+    private final CartServiceIntegrationProperties cartServiceIntegrationProperties;
 
     @Value("${integrations.cart-service.url}")
     private String cartServiceUrl;
@@ -26,10 +34,10 @@ public class CoreConfig {
         //посылаем запрос если за 10 сек ответ не получили, получили excp либо повторно послали запрос либо ответ клиенту, что не можем обработать
         TcpClient tcpClient = TcpClient
                 .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, cartServiceIntegrationProperties.getConnectTimeout())
                 .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MILLISECONDS)); // время ожидания чтения
-                    connection.addHandlerLast(new WriteTimeoutHandler(2000, TimeUnit.MILLISECONDS)); // время ожидания записи
+                    connection.addHandlerLast(new ReadTimeoutHandler(cartServiceIntegrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS)); // время ожидания чтения
+                    connection.addHandlerLast(new WriteTimeoutHandler(cartServiceIntegrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS)); // время ожидания записи
                 });
 
         // сборка веб клиента
