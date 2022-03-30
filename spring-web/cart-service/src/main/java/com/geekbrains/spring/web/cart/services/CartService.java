@@ -1,13 +1,16 @@
 package com.geekbrains.spring.web.cart.services;
 
-import com.geekbrains.spring.web.api.dto.ProductDto;
-import com.geekbrains.spring.web.cart.dto.Cart;
+import com.geekbrains.spring.web.api.core.ProductDto;
+import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
+import com.geekbrains.spring.web.cart.integrations.ProductsServiceIntegration;
+import com.geekbrains.spring.web.cart.models.AnalyticsCart;
+import com.geekbrains.spring.web.cart.models.Cart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -17,14 +20,20 @@ import java.util.function.Consumer;
 public class CartService {
 
     private final RedisTemplate<String, Object> redisTemplate;
-
-    private final RestTemplate restTemplate;
+    private final ProductsServiceIntegration productsServiceIntegration;
 
     @Value("${utils.cart.prefix}")
     private String cartPrefix;
 
+    @Value("${utils.analytic.prefix}")
+    private String analyticPrefix;
+
     public String getCartUuidFromSuffix(String suffix) {
         return cartPrefix + suffix;
+    }
+
+    public String getAnalyticsUuidFromSuffix(String suffix) {
+        return analyticPrefix + suffix;
     }
 
     public String generateCartUuid() {
@@ -38,14 +47,25 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
+    public AnalyticsCart getAnalyticsByDate(String analyticsKey) {
+        if (!redisTemplate.hasKey(analyticsKey)) {
+            redisTemplate.opsForValue().set(analyticsKey, new AnalyticsCart());
+        }
+        return (AnalyticsCart) redisTemplate.opsForValue().get(analyticsKey);
+    }
+
     public void addToCart(String cartKey, Long productId) {
 
         // GET from Redis
         // UPDATE OBJECT
         // SET to Redis
-        ProductDto productDto = restTemplate.getForObject("http://localhost:5555/core/api/v1/products/" + productId, ProductDto.class);
+        ProductDto productDto = productsServiceIntegration.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Продукт, не надйен в core-service, id: " + productId));
         execute(cartKey, c -> {
             c.add(productDto);
+        });
+        String analyticKey = getAnalyticsUuidFromSuffix(String.valueOf(LocalDate.now()));
+        executeAnalytics(analyticKey, ac -> {
+            ac.add(productDto);
         });
     }
 
@@ -74,6 +94,12 @@ public class CartService {
         Cart cart = getCurrentCart(cartKey); // GET
         action.accept(cart); // UPDATE
         redisTemplate.opsForValue().set(cartKey, cart); // SET
+    }
+
+    private void executeAnalytics(String analyticsKey, Consumer<AnalyticsCart> action) {
+        AnalyticsCart analyticsCart = getAnalyticsByDate(analyticsKey); // GET
+        action.accept(analyticsCart); // UPDATE
+        redisTemplate.opsForValue().set(analyticsKey, analyticsCart); // SET
     }
 
     public void updateCart(String cartKey, Cart cart) {

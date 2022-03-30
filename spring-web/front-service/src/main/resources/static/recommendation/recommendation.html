@@ -1,0 +1,38 @@
+<div>
+    <p></p>
+    <h3>Рекомендации</h3>
+    <table class="table table-hover">
+        <tr>
+            <td>ID</td>
+            <td>Название</td>
+            <td>Куплено штук</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="r in Recommendations">
+            <td>{{r.productId}}</td>
+            <td>{{r.productTitle}}</td>
+            <td>{{r.quantity}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p></p>
+<h3>5 наиболее заказываемых продуктов (за период)</h3>
+<form novalidate>
+    <input class="form-control" type="text" placeholder="Введите дату и время в формате гггг-мм-ддTчч:мм:сс" ng-model="recommendationOrderDetails.startDate">
+    <p></p>
+    <input class="form-control" type="text" placeholder="Введите дату и время в формате гггг-мм-ддTчч:мм:сс" ng-model="recommendationOrderDetails.finishDate">
+    <p></p>
+</form>
+
+    <button class="btn btn-primary" ng-click="createRecommendationByOrders()">Применить</button>
+    <p></p>
+    <p></p>
+    <h3>5 наиболее добавляемых в корзину продуктов (за период)</h3>
+    <form novalidate>
+        <input class="form-control" type="text" placeholder="Введите дату формате гггг-мм-дд" ng-model="recommendationDetails.startDate">
+        <p></p>
+    </form>
+
+    <button class="btn btn-primary" ng-click="createRecommendationByCarts()">Применить</button>
+</div>

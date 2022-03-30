@@ -1,6 +1,5 @@
-package com.geekbrains.spring.web.cart.config;
+package com.geekbrains.spring.web.cart.configs;
 
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -8,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class CartConfig {
     @Bean
-    @LoadBalanced
+    /*@LoadBalanced*/
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }

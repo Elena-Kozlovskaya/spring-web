@@ -18,3 +18,8 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
+integrations:
+  cart-service:
+    url: http://localhost:5555/cart
+  recommendation-service:
+    url: http://localhost:5555/rec
