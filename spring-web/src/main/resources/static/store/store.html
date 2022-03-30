@@ -13,6 +13,12 @@
                 </div>
                 <p></p>
                 <div class="form-floating input-group-sm">
+                    <input class="form-control" id="filterCategory" ng-model="filter.category_part_title" placeholder=""
+                           type="text">
+                    <label for="filterCategory">Категория продукта</label>
+                </div>
+                <p></p>
+                <div class="form-floating input-group-sm">
                     <input class="form-control" id="filterMinPrice" ng-model="filter.min_price" placeholder=""
                            type="number">
                     <label for="filterMinPrice">Мин. цена</label>
@@ -24,6 +30,7 @@
                     <label for="filterMaxPrice">Макс. цена</label>
                 </div>
                 <p></p>
+
                 <button class="btn btn-outline-warning btn-sm" style="width: 100%;" type="submit">Применить</button>
             </form>
         </div>
@@ -33,6 +40,7 @@
                     <td>ID</td>
                     <td>Название</td>
                     <td>Цена</td>
+                    <td>Категория</td>
                     <td></td>
                 </tr>
                 <tbody>
@@ -40,6 +48,7 @@
                     <td>{{p.id}}</td>
                     <td>{{p.title}}</td>
                     <td>{{p.price}}</td>
+                    <td>{{p.categoryTitle}}</td>
                     <td>
                         <button class="btn btn-primary" ng-click="addToCart(p.id)">Добавить в корзину</button>
                     </td>
