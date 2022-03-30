@@ -1,13 +1,12 @@
-package com.geekbranis.spring.web.gateway;
+package com.geekbrains.spring.web.front;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-// https://cloud.spring.io/spring-cloud-gateway/reference/html/
-
 @SpringBootApplication
-public class GatewayApp {
+public class FrontApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(GatewayApp.class, args);
+        SpringApplication.run(FrontApplication.class, args);
     }
 }
