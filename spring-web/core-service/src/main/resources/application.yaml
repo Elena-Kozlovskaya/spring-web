@@ -1,10 +1,7 @@
 server:
   port: 8189
   servlet:
-    context-path: /app
-utils:
-  cart:
-    prefix: SPRING_WEB_
+    context-path: /web-market-core
 spring:
   datasource:
     driver-class-name: org.h2.Driver

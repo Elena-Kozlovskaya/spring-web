@@ -1,9 +1,9 @@
 package com.geekbrains.spring.web.core.controllers;
 
+import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.core.converters.ProductConverter;
-import com.geekbrains.spring.web.core.dto.ProductDto;
+import com.geekbrains.spring.web.api.dto.ProductDto;
 import com.geekbrains.spring.web.core.entities.Product;
-import com.geekbrains.spring.web.core.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.core.services.ProductsService;
 import com.geekbrains.spring.web.core.validators.ProductValidator;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:3000")
 public class ProductsController {
     private final ProductsService productsService;
     private final ProductConverter productConverter;
