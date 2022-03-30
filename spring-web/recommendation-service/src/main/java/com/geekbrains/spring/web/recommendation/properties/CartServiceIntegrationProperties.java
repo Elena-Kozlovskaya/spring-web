@@ -1,4 +1,4 @@
-package com.geekbrains.spring.web.core.properties;
+package com.geekbrains.spring.web.recommendation.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

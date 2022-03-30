@@ -1,7 +1,6 @@
 package com.geekbrains.spring.web.cart.services;
 
 import com.geekbrains.spring.web.api.core.ProductDto;
-import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.cart.integrations.ProductsServiceIntegration;
 import com.geekbrains.spring.web.cart.models.AnalyticsCart;
 import com.geekbrains.spring.web.cart.models.Cart;
@@ -59,7 +58,7 @@ public class CartService {
         // GET from Redis
         // UPDATE OBJECT
         // SET to Redis
-        ProductDto productDto = productsServiceIntegration.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Продукт, не надйен в core-service, id: " + productId));
+        ProductDto productDto = productsServiceIntegration.findById(productId);
         execute(cartKey, c -> {
             c.add(productDto);
         });

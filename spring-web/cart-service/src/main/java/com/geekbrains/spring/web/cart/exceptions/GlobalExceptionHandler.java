@@ -1,7 +1,7 @@
 package com.geekbrains.spring.web.cart.exceptions;
 
+import com.geekbrains.spring.web.api.exceptions.AppError;
 import com.geekbrains.spring.web.api.exceptions.CartServiceAppError;
-import com.geekbrains.spring.web.api.exceptions.ProductsServiceAppError;
 import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<CartServiceAppError> catchResourceNotFoundException(ResourceNotFoundException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new CartServiceAppError(CartServiceAppError.CartServiceError.CART_IS_BROKEN.name(), e.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new CartServiceAppError(CartServiceAppError.CartServiceError.CART_NOT_FOUND.name(), e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
@@ -25,15 +25,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ProductsServiceAppError> catchProductsIntegrationException(ProductsServiceIntegrationException e) {
+    public ResponseEntity<AppError> catchProductsIntegrationException(ProductsServiceIntegrationException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new ProductsServiceAppError(ProductsServiceAppError.ProductsServiceError.PRODUCTS_SERVICE_IS_BROKEN.name(), e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new AppError("PRODUCTS_SERVICE_INTEGRATION_ERROR", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // сделать интеграцию через редис и переписать
-    /*@ExceptionHandler
-    public ResponseEntity<ProductsServiceAppError> catchProductResourceNotFoundException(ResourceNotFoundException e) {
-        log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new ProductsServiceAppError(ProductsServiceAppError.ProductsServiceError.PRODUCT_NOT_FOUND.name(), e.getMessage()), HttpStatus.NOT_FOUND);
-    }*/
 }
