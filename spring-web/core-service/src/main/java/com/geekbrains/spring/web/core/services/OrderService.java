@@ -5,6 +5,7 @@ import com.geekbrains.spring.web.api.core.OrderDetailsDto;
 import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.core.entities.Order;
 import com.geekbrains.spring.web.core.entities.OrderItem;
+import com.geekbrains.spring.web.core.enums.OrderStatus;
 import com.geekbrains.spring.web.core.integrations.CartServiceIntegration;
 import com.geekbrains.spring.web.core.repositories.OrderItemRepository;
 import com.geekbrains.spring.web.core.repositories.OrdersRepository;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,9 +31,12 @@ public class OrderService {
         CartDto currentCart = cartServiceIntegration.getUserCart(username);
         Order order = new Order();
         order.setAddress(orderDetailsDto.getAddress());
+        order.setCity(orderDetailsDto.getCity());
+        order.setPostalCode(orderDetailsDto.getPostalCode());
         order.setPhone(orderDetailsDto.getPhone());
         order.setUsername(username);
         order.setTotalPrice(currentCart.getTotalPrice());
+        order.setStatus(OrderStatus.NOT_PAID.name());
         List<OrderItem> items = currentCart.getItems().stream()
                 .map(o -> {
                     OrderItem item = new OrderItem();
@@ -53,5 +58,20 @@ public class OrderService {
 
     public List<OrderItem> findAllOrdersByDate(LocalDateTime createdAt, LocalDateTime finishedAt) {
         return orderItemRepository.findAllByDate(createdAt, finishedAt);
+    }
+
+    public Optional<Order> findById(Long id){
+        return ordersRepository.findById(id);
+    }
+
+    public Optional<Order> findByIdWithStatus(Long id, String status){
+        return ordersRepository.findByIdWithStatus(id, status);
+    }
+
+    @Transactional
+    public void updateOrderStatus(Long id, String status){
+        Order order = ordersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Заказ не найдет"));
+        order.setStatus(status);
+        ordersRepository.save(order);
     }
 }

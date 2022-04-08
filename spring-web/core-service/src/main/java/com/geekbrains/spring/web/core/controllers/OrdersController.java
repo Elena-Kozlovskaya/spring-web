@@ -3,6 +3,7 @@ package com.geekbrains.spring.web.core.controllers;
 import com.geekbrains.spring.web.api.core.OrderDetailsDto;
 import com.geekbrains.spring.web.api.core.OrderDto;
 import com.geekbrains.spring.web.api.dto.AnalyticItemDto;
+import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.api.recommendation.RecommendationDetailsDto;
 import com.geekbrains.spring.web.core.converters.AnalyticItemConverter;
 import com.geekbrains.spring.web.core.converters.OrderConverter;
@@ -77,5 +78,10 @@ public class OrdersController {
         LocalDateTime finishedAt = LocalDateTime.parse(recommendationDetailsDto.getFinishDate());
         return orderService.findAllOrdersByDate(startedAt, finishedAt).stream()
                 .map(analyticItemConverter::entityToDto).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public OrderDto getOrderById(@PathVariable Long id){
+        return orderConverter.entityToDto(orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found")));
     }
 }

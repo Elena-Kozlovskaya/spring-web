@@ -48,7 +48,10 @@ create table orders
     username    varchar (255) not null,
     total_price numeric (8, 2) not null,
     address     varchar(255),
+    city        varchar(255),
+    postal_code varchar(255),
     phone       varchar(255),
+    status       varchar(255),
     created_at  timestamp default current_timestamp,
     updated_at  timestamp default current_timestamp
 );
@@ -64,6 +67,12 @@ create table order_items
     created_at        timestamp default current_timestamp,
     updated_at        timestamp default current_timestamp
 );
+
+insert into orders (username, total_price, address, city, postal_code, phone, status)
+values ('MyUser', 4.00, 'MyAddress', 'MyCity', '987321', '123789', 'COMPLETED');
+
+insert into order_items (product_id, order_id, quantity, price_per_product, price)
+values(1, 1, 2, 2.00, 4.00);
 
 
 

@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Order, Long> {
     @Query("select o from Order o where o.username = ?1")
     List<Order> findAllByUsername(String username);
+
+    @Query("select o from Order o where o.id = ?1 and o.status = ?2")
+    Optional<Order> findByIdWithStatus(Long id, String status);
 }
