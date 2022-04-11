@@ -29,22 +29,38 @@ public class OrderService {
     @Transactional
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
         CartDto currentCart = cartServiceIntegration.getUserCart(username);
-        Order order = new Order();
+        /*Order order = new Order();
         order.setAddress(orderDetailsDto.getAddress());
         order.setCity(orderDetailsDto.getCity());
         order.setPostalCode(orderDetailsDto.getPostalCode());
         order.setPhone(orderDetailsDto.getPhone());
         order.setUsername(username);
         order.setTotalPrice(currentCart.getTotalPrice());
-        order.setStatus(OrderStatus.NOT_PAID.name());
+        order.setStatus(OrderStatus.NOT_PAID.name());*/
+        Order order = Order.builder()
+                .address(orderDetailsDto.getAddress())
+                .city(orderDetailsDto.getCity())
+                .postalCode(orderDetailsDto.getPostalCode())
+                .phone(orderDetailsDto.getPhone())
+                .username(username)
+                .totalPrice(currentCart.getTotalPrice())
+                .status(OrderStatus.NOT_PAID.name())
+                .build();
         List<OrderItem> items = currentCart.getItems().stream()
                 .map(o -> {
-                    OrderItem item = new OrderItem();
+                    /*OrderItem item = new OrderItem();
                     item.setOrder(order);
                     item.setQuantity(o.getQuantity());
                     item.setPricePerProduct(o.getPricePerProduct());
                     item.setPrice(o.getPrice());
-                    item.setProduct(productsService.findById(o.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found")));
+                    item.setProduct(productsService.findById(o.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found")));*/
+                    OrderItem item = OrderItem.builder()
+                            .order(order)
+                            .quantity(o.getQuantity())
+                            .pricePerProduct(o.getPricePerProduct())
+                            .price(o.getPrice())
+                            .product(productsService.findById(o.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found")))
+                            .build();
                     return item;
                 }).collect(Collectors.toList());
         order.setItems(items);
