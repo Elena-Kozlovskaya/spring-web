@@ -2,14 +2,15 @@ package com.geekbrains.spring.web.api.recommendation;
 
 import com.geekbrains.spring.web.api.carts.CartItemDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class RecommendationDto {
     private List<CartItemDto> items;
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
 
-    public RecommendationDto(List<CartItemDto> items, int totalPrice) {
+    public RecommendationDto(List<CartItemDto> items, BigDecimal totalPrice) {
         this.items = items;
         this.totalPrice = totalPrice;
     }
@@ -21,7 +22,7 @@ public class RecommendationDto {
         return items;
     }
 
-    public int getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
@@ -30,7 +31,7 @@ public class RecommendationDto {
         this.items = items;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

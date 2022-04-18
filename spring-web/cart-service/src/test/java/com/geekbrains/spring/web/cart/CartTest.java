@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+
 @SpringBootTest
 public class CartTest {
     private static ProductDto firstProduct;
@@ -30,8 +32,8 @@ public class CartTest {
 
     @BeforeAll
     public static void createProductDto(){
-        firstProduct = new ProductDto(1L, "Tomato", 20, "Vegetables");
-        secondProduct = new ProductDto(2L, "Orange", 40, "Fruits");
+        firstProduct = new ProductDto(1L, "Tomato", BigDecimal.valueOf(20), "Vegetables");
+        secondProduct = new ProductDto(2L, "Orange", BigDecimal.valueOf(40), "Fruits");
     }
 
     @Test
@@ -42,12 +44,12 @@ public class CartTest {
         cartService.addToCart("test_cart", 1L);
         cartService.addToCart("test_cart", 1L);
         Assertions.assertEquals(1, cartService.getCurrentCart("test_cart").getItems().size());
-        Assertions.assertEquals(80, cartService.getCurrentCart("test_cart").getTotalPrice());
+        Assertions.assertEquals(BigDecimal.valueOf(80), cartService.getCurrentCart("test_cart").getTotalPrice());
         Assertions.assertEquals(4, cartService.getCurrentCart("test_cart").getItems().stream().map(p -> p.getQuantity()).findFirst().get());
         Mockito.doReturn(secondProduct).when(restTemplate).getForObject("http://localhost:5555/core/api/v1/products/" + 2L, ProductDto.class);
         cartService.addToCart("test_cart", 2L);
         Assertions.assertEquals(2, cartService.getCurrentCart("test_cart").getItems().size());
-        Assertions.assertEquals(120, cartService.getCurrentCart("test_cart").getTotalPrice());
+        Assertions.assertEquals(BigDecimal.valueOf(120), cartService.getCurrentCart("test_cart").getTotalPrice());
         Assertions.assertEquals(2, cartService.getCurrentCart("test_cart").getItems().stream().map(p -> p.getProductId()).count());
     }
 
@@ -77,8 +79,8 @@ public class CartTest {
     @Test
     public void mergeTest(){
         cartService.clearCart("user_cart");
-        Assertions.assertEquals(0, cartService.getCurrentCart("test_cart").getTotalPrice());
-        Assertions.assertEquals(0, cartService.getCurrentCart("user_cart").getTotalPrice());
+        Assertions.assertEquals(BigDecimal.ZERO, cartService.getCurrentCart("test_cart").getTotalPrice());
+        Assertions.assertEquals(BigDecimal.ZERO, cartService.getCurrentCart("user_cart").getTotalPrice());
         Mockito.doReturn(firstProduct).when(restTemplate).getForObject("http://localhost:5555/core/api/v1/products/" + 1L, ProductDto.class);
         cartService.addToCart("test_cart", 1L);
         cartService.addToCart("test_cart", 1L);
@@ -86,7 +88,7 @@ public class CartTest {
         cartService.addToCart("user_cart", 2L);
         cartService.merge("user_cart", "test_cart");
         Assertions.assertEquals(2, cartService.getCurrentCart("user_cart").getItems().size());
-        Assertions.assertEquals(80, cartService.getCurrentCart("user_cart").getTotalPrice());
+        Assertions.assertEquals(BigDecimal.valueOf(80), cartService.getCurrentCart("user_cart").getTotalPrice());
         Assertions.assertEquals(0, cartService.getCurrentCart("test_cart").getItems().size());
     }
 }

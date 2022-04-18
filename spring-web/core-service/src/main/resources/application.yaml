@@ -21,5 +21,9 @@ spring:
 integrations:
   cart-service:
     url: http://localhost:5555/cart
+    timeouts:
+      connect: 2000
+      read: 10000
+      write: 2000
   recommendation-service:
     url: http://localhost:5555/rec

@@ -1,13 +1,15 @@
 package com.geekbrains.spring.web.api.carts;
 
+import java.math.BigDecimal;
+
 public class CartItemDto {
     private Long productId;
     private String productTitle;
     private int quantity;
-    private int pricePerProduct;
-    private int price;
+    private BigDecimal pricePerProduct;
+    private BigDecimal price;
 
-    public CartItemDto(Long productId, String productTitle, int quantity, int pricePerProduct, int price) {
+    public CartItemDto(Long productId, String productTitle, int quantity, BigDecimal pricePerProduct, BigDecimal price) {
         this.productId = productId;
         this.productTitle = productTitle;
         this.quantity = quantity;
@@ -30,11 +32,11 @@ public class CartItemDto {
         return quantity;
     }
 
-    public int getPricePerProduct() {
+    public BigDecimal getPricePerProduct() {
         return pricePerProduct;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -50,11 +52,11 @@ public class CartItemDto {
         this.quantity = quantity;
     }
 
-    public void setPricePerProduct(int pricePerProduct) {
+    public void setPricePerProduct(BigDecimal pricePerProduct) {
         this.pricePerProduct = pricePerProduct;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }
