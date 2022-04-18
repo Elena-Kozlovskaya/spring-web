@@ -22,6 +22,10 @@
                 templateUrl: 'order/order.html',
                 controller: 'orderController'
             })
+            .when('/order_pay/:orderId', {
+                templateUrl: 'order_pay/order_pay.html',
+                controller: 'orderPayController'
+            })
             .when('/rec', {
                 templateUrl: 'recommendation/recommendation.html',
                 controller: 'recommendationController'

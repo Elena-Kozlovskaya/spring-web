@@ -31,6 +31,10 @@
         <p></p>
         <input class="form-control" type="text" placeholder="Адрес доставки" ng-model="orderDetails.address">
         <p></p>
+        <input class="form-control" type="text" placeholder="Город" ng-model="orderDetails.city">
+        <p></p>
+        <input class="form-control" type="text" placeholder="Почтовый индекс" ng-model="orderDetails.postalCode">
+        <p></p>
     </form>
 
     <button class="btn btn-primary" ng-click="checkOut()" ng-show="isUserLoggedIn() && cart.items.length > 0">Оформить заказ</button>

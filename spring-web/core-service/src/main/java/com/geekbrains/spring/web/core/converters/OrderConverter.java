@@ -23,6 +23,8 @@ public class OrderConverter {
         OrderDto out = new OrderDto();
         out.setId(order.getId());
         out.setAddress(order.getAddress());
+        out.setCity(order.getCity());
+        out.setPostalCode(order.getPostalCode());
         out.setPhone(order.getPhone());
         out.setTotalPrice(order.getTotalPrice());
         out.setUsername(order.getUsername());

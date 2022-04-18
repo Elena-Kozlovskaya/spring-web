@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 import java.util.Objects;
 
+//завернуть (до отправки в OrderServiceIntegration) List<AnalyticItemDto> в Dto с полем List
+
 @Component
 @RequiredArgsConstructor
 public class OrderServiceIntegration {

@@ -6,13 +6,23 @@
         <tr>
             <td>ID</td>
             <td>Адрес доставки</td>
+            <td>Город</td>
+            <td>Почтовый индекс</td>
             <td>Стоимость</td>
+            <td>Статус</td>
+            <td></td>
         </tr>
         <tbody>
         <tr ng-repeat="order in MyOrders">
             <td>{{order.id}}</td>
             <td>{{order.address}}</td>
+            <td>{{order.city}}</td>
+            <td>{{order.postalCode}}</td>
             <td>{{order.totalPrice}}</td>
+            <td>{{order.status}}</td>
+            <td>
+                <button class="btn btn-primary" ng-click="goToPay(order.id)" ng-show = "order.status != 'PAID'">Оплатить</button>
+            </td>
         </tr>
         </tbody>
     </table>
