@@ -8,9 +8,11 @@ import com.geekbrains.spring.web.recommendation.models.Recommendation;
 import com.geekbrains.spring.web.recommendation.models.RecommendationItem;
 import com.geekbrains.spring.web.recommendation.repositories.RecommendationItemsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,8 +25,16 @@ public class RecommendationService {
     private final CartServiceIntegration cartServiceIntegration;
     private final RecommendationItemsRepository recommendationItemsRepository;
 
-    @Transactional
+    /*@Transactional
     public void createByOrders(RecommendationDetailsDto recommendationDetailsDto) {
+        List<AnalyticItemDto> analyticItemDtos = orderServiceIntegration.findByDate(recommendationDetailsDto);
+        createRecommendation(analyticItemDtos);
+    }*/
+
+    @Transactional
+    @Scheduled(cron = "0 0 00 * * *")
+    public void getAllOrdersByDay() {
+        RecommendationDetailsDto recommendationDetailsDto = new RecommendationDetailsDto(LocalDate.now().minusDays(1L).toString(), LocalDate.now().toString());
         List<AnalyticItemDto> analyticItemDtos = orderServiceIntegration.findByDate(recommendationDetailsDto);
         createRecommendation(analyticItemDtos);
     }
@@ -44,6 +54,7 @@ public class RecommendationService {
                 .sorted(Comparator.comparing(RecommendationItem::getQuantity).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
+        //сюда кэш
         recommendationItemsRepository.saveAll(recommendationItems);
     }
 }

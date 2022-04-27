@@ -11,8 +11,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @EnableRedisRepositories // для создание репозитриев рэдиса
 public class RedisConfig {
+
     @Bean
-    // фабрика поясняющая, как подключаться к рэдису(если изменить дефолтные порты, приписывать все сюда)
+    // фабрика поясняющая, как подключаться к рэдису(если изменить дефолтные порты, прописывать все сюда)
     public JedisConnectionFactory jedisConnectionFactory() {
         return new JedisConnectionFactory();
     }
@@ -26,4 +27,5 @@ public class RedisConfig {
         template.setConnectionFactory(jedisConnectionFactory());
         return template;
     }
+
 }

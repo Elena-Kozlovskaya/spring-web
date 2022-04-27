@@ -32,8 +32,8 @@ public class CartTest {
 
     @BeforeAll
     public static void createProductDto(){
-        firstProduct = new ProductDto(1L, "Tomato", BigDecimal.valueOf(20), "Vegetables");
-        secondProduct = new ProductDto(2L, "Orange", BigDecimal.valueOf(40), "Fruits");
+        firstProduct = new ProductDto(1L, "Tomato", new BigDecimal("2.00"), "Vegetables");
+        secondProduct = new ProductDto(2L, "Orange", new BigDecimal("4.00"), "Fruits");
     }
 
     @Test
@@ -44,12 +44,12 @@ public class CartTest {
         cartService.addToCart("test_cart", 1L);
         cartService.addToCart("test_cart", 1L);
         Assertions.assertEquals(1, cartService.getCurrentCart("test_cart").getItems().size());
-        Assertions.assertEquals(BigDecimal.valueOf(80), cartService.getCurrentCart("test_cart").getTotalPrice());
+        Assertions.assertEquals(new BigDecimal("8.00"), cartService.getCurrentCart("test_cart").getTotalPrice());
         Assertions.assertEquals(4, cartService.getCurrentCart("test_cart").getItems().stream().map(p -> p.getQuantity()).findFirst().get());
         Mockito.doReturn(secondProduct).when(restTemplate).getForObject("http://localhost:5555/core/api/v1/products/" + 2L, ProductDto.class);
         cartService.addToCart("test_cart", 2L);
         Assertions.assertEquals(2, cartService.getCurrentCart("test_cart").getItems().size());
-        Assertions.assertEquals(BigDecimal.valueOf(120), cartService.getCurrentCart("test_cart").getTotalPrice());
+        Assertions.assertEquals(new BigDecimal("12.00"), cartService.getCurrentCart("test_cart").getTotalPrice());
         Assertions.assertEquals(2, cartService.getCurrentCart("test_cart").getItems().stream().map(p -> p.getProductId()).count());
     }
 
@@ -88,7 +88,7 @@ public class CartTest {
         cartService.addToCart("user_cart", 2L);
         cartService.merge("user_cart", "test_cart");
         Assertions.assertEquals(2, cartService.getCurrentCart("user_cart").getItems().size());
-        Assertions.assertEquals(BigDecimal.valueOf(80), cartService.getCurrentCart("user_cart").getTotalPrice());
+        Assertions.assertEquals(new BigDecimal("8.00"), cartService.getCurrentCart("user_cart").getTotalPrice());
         Assertions.assertEquals(0, cartService.getCurrentCart("test_cart").getItems().size());
     }
 }

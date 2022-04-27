@@ -97,8 +97,8 @@ public class CartService {
 
     private void executeAnalytics(String analyticsKey, Consumer<AnalyticsCart> action) {
         AnalyticsCart analyticsCart = getAnalyticsByDate(analyticsKey); // GET
-        action.accept(analyticsCart); // UPDATE
-        redisTemplate.opsForValue().set(analyticsKey, analyticsCart); // SET
+        action.accept(analyticsCart); // UPDATE добавляет в корзину аналитики продукт
+        redisTemplate.opsForValue().set(analyticsKey, analyticsCart); // SET добавляет корзину аналитики в базу
     }
 
     public void updateCart(String cartKey, Cart cart) {
