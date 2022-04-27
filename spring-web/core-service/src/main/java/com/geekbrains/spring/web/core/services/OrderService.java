@@ -4,12 +4,14 @@ import com.geekbrains.spring.web.api.carts.CartDto;
 import com.geekbrains.spring.web.api.core.OrderDetailsDto;
 import com.geekbrains.spring.web.api.exceptions.ResourceNotFoundException;
 import com.geekbrains.spring.web.core.entities.Order;
+import com.geekbrains.spring.web.core.entities.OrderEvent;
 import com.geekbrains.spring.web.core.entities.OrderItem;
 import com.geekbrains.spring.web.core.enums.OrderStatus;
 import com.geekbrains.spring.web.core.integrations.CartServiceIntegration;
 import com.geekbrains.spring.web.core.repositories.OrderItemRepository;
 import com.geekbrains.spring.web.core.repositories.OrdersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final CartServiceIntegration cartServiceIntegration;
     private final ProductsService productsService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
@@ -65,13 +68,21 @@ public class OrderService {
                 }).collect(Collectors.toList());
         order.setItems(items);
         ordersRepository.save(order);
-        cartServiceIntegration.clearUserCart(username);
+        // здесь сохранять в кэш определенного объема(чистить больше объема и после отправки в ас по таймеру)
+        // при заполнении отправлять в аналитик сервис и очищать
+        publicOrderEvents(username);
+       // cartServiceIntegration.clearUserCart(username);
+    }
+
+    private void publicOrderEvents(String message){
+        applicationEventPublisher.publishEvent(new OrderEvent(this, message));
     }
 
     public List<Order> findOrdersByUsername(String username) {
         return ordersRepository.findAllByUsername(username);
     }
 
+    //сюда таймер на отправку в аналитик сервис разбить на чанки
     public List<OrderItem> findAllOrdersByDate(LocalDateTime createdAt, LocalDateTime finishedAt) {
         return orderItemRepository.findAllByDate(createdAt, finishedAt);
     }

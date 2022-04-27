@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 @Tag(name = "Продукты", description = "Методы работы с продуктами")
+
 public class ProductsController {
     private final ProductsService productsService;
     private final ProductConverter productConverter;
