@@ -4,6 +4,7 @@ import com.geekbrains.spring.web.auth.entities.Role;
 import com.geekbrains.spring.web.auth.entities.User;
 import com.geekbrains.spring.web.auth.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
+    @Cacheable("user_by_username")
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }

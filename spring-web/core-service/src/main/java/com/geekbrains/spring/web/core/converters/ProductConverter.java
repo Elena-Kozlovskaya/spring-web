@@ -4,6 +4,7 @@ import com.geekbrains.spring.web.api.core.ProductDto;
 import com.geekbrains.spring.web.core.entities.Product;
 import org.springframework.stereotype.Component;
 
+//mapper
 @Component
 public class ProductConverter {
     public Product dtoToEntity(ProductDto productDto) {
