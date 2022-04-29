@@ -5,6 +5,7 @@ import com.geekbrains.spring.web.api.dto.AnalyticItemDto;
 import com.geekbrains.spring.web.core.entities.OrderItem;
 import org.springframework.stereotype.Component;
 
+//mapper
 @Component
 public class AnalyticItemConverter {
 

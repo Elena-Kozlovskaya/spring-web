@@ -11,6 +11,7 @@ import com.geekbrains.spring.web.core.integrations.CartServiceIntegration;
 import com.geekbrains.spring.web.core.repositories.OrderItemRepository;
 import com.geekbrains.spring.web.core.repositories.OrdersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,19 +79,23 @@ public class OrderService {
         applicationEventPublisher.publishEvent(new OrderEvent(this, message));
     }
 
+    @Cacheable("orders_by_username")
     public List<Order> findOrdersByUsername(String username) {
         return ordersRepository.findAllByUsername(username);
     }
 
     //сюда таймер на отправку в аналитик сервис разбить на чанки
+    @Cacheable("orders_by_date")
     public List<OrderItem> findAllOrdersByDate(LocalDateTime createdAt, LocalDateTime finishedAt) {
         return orderItemRepository.findAllByDate(createdAt, finishedAt);
     }
 
+    @Cacheable("orders")
     public Optional<Order> findById(Long id){
         return ordersRepository.findById(id);
     }
 
+    @Cacheable("orders_by_status")
     public Optional<Order> findByIdWithStatus(Long id, String status){
         return ordersRepository.findByIdWithStatus(id, status);
     }
