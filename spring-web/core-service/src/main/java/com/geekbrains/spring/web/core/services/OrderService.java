@@ -65,6 +65,8 @@ public class OrderService {
                 }).collect(Collectors.toList());
         order.setItems(items);
         ordersRepository.save(order);
+        // здесь сохранять в кэш определенного объема(чистить больше объема и после отправки в ас по таймеру)
+        // при заполнении отправлять в аналитик сервис и очищать
         cartServiceIntegration.clearUserCart(username);
     }
 
@@ -72,6 +74,7 @@ public class OrderService {
         return ordersRepository.findAllByUsername(username);
     }
 
+    //сюда таймер на отправку в аналитик сервис разбить на чанки
     public List<OrderItem> findAllOrdersByDate(LocalDateTime createdAt, LocalDateTime finishedAt) {
         return orderItemRepository.findAllByDate(createdAt, finishedAt);
     }

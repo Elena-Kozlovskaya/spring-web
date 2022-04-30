@@ -7,6 +7,10 @@ import com.geekbrains.spring.web.core.repositories.ProductsRepository;
 import com.geekbrains.spring.web.core.repositories.specifications.ProductsSpecifications;
 import com.geekbrains.spring.web.core.soap.products.ProductSoap;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,6 +22,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductsService {
@@ -50,18 +55,35 @@ public class ProductsService {
         return productsRepository.findAll(spec, PageRequest.of(page - 1, 8));
     }
 
+    @Cacheable("products")
     public Optional<Product> findById(Long id) {
+        log.info("finding product by id: {}", id);
         return productsRepository.findById(id);
     }
 
+    @CacheEvict("products")
     public void deleteById(Long id) {
         productsRepository.deleteById(id);
     }
 
+    @CachePut(value = "products", key = "#product.title")
     public Product save(Product product) {
         return productsRepository.save(product);
     }
 
+    //Тестовые методы
+    @Cacheable(value = "products", key = "#product.title")
+    public Product saveOrReturnCached(Product product) {
+        log.info("creating product: {}", product);
+        return productsRepository.save(product);
+    }
+
+    @CachePut(value = "products", key = "#product.title")
+    public Product saveAndRefreshCache(Product product) {
+        log.info("creating product: {}", product);
+        return productsRepository.save(product);
+    }
+///////////////////////////////////////////////////////////////
     @Transactional
     public Product update(ProductDto productDto) {
         Product product = productsRepository.findById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукта, не надйен в базе, id: " + productDto.getId()));
